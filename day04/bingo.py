@@ -58,5 +58,5 @@ def part_two():
     return np.sum(board) * number
 
 
-# print(part_one())
+print(part_one())
 print(part_two())
