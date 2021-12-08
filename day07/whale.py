@@ -17,12 +17,16 @@ def get_fuel_incremental(position, target):
 
 def part_one():
     data = format_data()
+    # shorter with median
+    print(get_fuel_linear(data, np.median(data)))
     target_position = min(list(range(0, np.max(data))), key=lambda x: get_fuel_linear(data, x))
     return target_position, get_fuel_linear(data, target_position)
 
 
 def part_two():
     data = format_data()
+    # shorter with mean
+    print(get_fuel_incremental(data, int(np.mean(data))))
     target_position = min(list(range(0, np.max(data))), key=lambda x: get_fuel_incremental(data, x))
     return target_position, get_fuel_incremental(data, target_position)
 
