@@ -40,23 +40,23 @@ def get_neighbor(idx, maxv):
         yield idx[0], idx[1] + 1
 
 
-class Bassin:
-    def __init__(self, idx, map):
+class Basin:
+    def __init__(self, idx, lava_map):
         self.idx = idx
-        self.value = map[idx]
+        self.value = lava_map[idx]
         self.border = [(idx, self.value)]
         self.counter = 1
         self.viewed = {self.idx}
 
-    def update(self, map):
+    def update(self, lava_map):
         new_border = list()
         updated = False
         for _idx, value in self.border:
-            for neighbor in get_neighbor(_idx, map.shape):
-                if map[neighbor] > value:
+            for neighbor in get_neighbor(_idx, lava_map.shape):
+                if lava_map[neighbor] > value:
                     updated = True
-                    new_border.append((neighbor, map[neighbor]))
-                    if neighbor not in self.viewed and map[neighbor] < 9:
+                    new_border.append((neighbor, lava_map[neighbor]))
+                    if neighbor not in self.viewed and lava_map[neighbor] < 9:
                         self.counter += 1
                         self.viewed.add(neighbor)
         self.border = new_border
@@ -65,13 +65,13 @@ class Bassin:
 
 def part_two():
     data, data_padded = format_data()
-    idxX, idxY = get_min_idx(data_padded)
-    bassins = [Bassin((x, y), data) for x, y in zip(idxX - 1, idxY - 1)]
-    while any([bassin.update(data) for bassin in bassins]):
+    idx_x, idx_y = get_min_idx(data_padded)
+    basins = [Basin((x, y), data) for x, y in zip(idx_x - 1, idx_y - 1)]
+    while any([basin.update(data) for basin in basins]):
         continue
     result = 1
-    for bassin in sorted(bassins, key=lambda x: x.counter, reverse=True)[:3]:
-        result *= bassin.counter
+    for basin in sorted(basins, key=lambda x: x.counter, reverse=True)[:3]:
+        result *= basin.counter
     return result
 
 
