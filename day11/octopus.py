@@ -21,15 +21,15 @@ def get_flash_addition(idxs):
 
 
 def update_energy(energy_levels):
-    do = True
-    to_flash = total_flash = np.zeros((10, 10)).astype(np.bool_)
     energy_levels += 1
-    while do or np.sum(to_flash):
-        do = False
+    total_flash = np.zeros((10, 10)).astype(np.bool_)
+    update = True
+    while update:
         to_flash = (energy_levels > 9) & (~total_flash)
-        total_flash = total_flash | to_flash
+        total_flash |= to_flash
         addition = get_flash_addition(np.where(to_flash))
         energy_levels += addition
+        update = np.sum(to_flash) > 0
     energy_levels[np.where(energy_levels > 9)] = 0
     return energy_levels, np.sum(total_flash)
 
