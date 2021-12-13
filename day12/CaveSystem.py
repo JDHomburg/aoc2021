@@ -98,22 +98,18 @@ class CaveGraph:
         return paths
 
 
-def part_one():
-    graph = CaveGraph()
-    for line in read_data('input.txt'):
-        line = line.split('-')
-        graph.add_edge(line[0], line[1])
+graph = CaveGraph()
+for line in read_data('input.txt'):
+    line = line.split('-')
+    graph.add_edge(line[0], line[1])
 
+
+def part_one():
     paths = graph.get_all_paths('start', 'end')
     print(len(paths))
 
 
 def part_two():
-    graph = CaveGraph()
-    for line in read_data('input.txt'):
-        line = line.split('-')
-        graph.add_edge(line[0], line[1])
-
     paths = graph.get_all_paths('start', 'end', small_cave_single=False)
     print(len(paths))
 
