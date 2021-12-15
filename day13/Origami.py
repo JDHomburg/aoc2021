@@ -33,7 +33,7 @@ def fold(paper, folding):
 
 def print_paper(paper):
     for line in paper:
-        print(''.join(['\u2588' if v else ' ' for v in line]).format('utf-8'))
+        print(''.join(['\u2588\u2588' if v else '  ' for v in line]).format('utf-8'))
 
 
 def part_one():
