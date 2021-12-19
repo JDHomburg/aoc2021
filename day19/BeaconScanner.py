@@ -83,8 +83,9 @@ def match_clouds(points):
     scanner_ids = list(range(1, len(points)))
     scanner_positions = [np.asarray([0, 0, 0])]
 
-    plot_world = mlab.points3d(world[:, 0], world[:, 1], world[:, 2], scale_factor=0.001)
-    mlab.show()
+    plot_world = mlab.points3d(world[:, 0].tolist(), world[:, 1].tolist(), world[:, 2].tolist(),
+                               opacity=0.5, scale_factor=100, color=(0, 0, 1), resolution=128)
+    mlab.show(stop=True)
     while scanner_ids:
         matched = False
         for scanner_id in scanner_ids:
@@ -102,11 +103,18 @@ def match_clouds(points):
         scanner_ids.remove(scanner_id)
         cloud += translation
         scanner_positions.append(translation)
-        print('Debug')
-        mlab.clf()
-        plot_world = mlab.points3d(world[:, 0], world[:, 1], world[:, 2], scale_factor=0.001)
-        plot_scanner = mlab.points3d(cloud[:, 0], cloud[:, 1], cloud[:, 2], scale_factor=0.001)
-        mlab.show()
+        # mlab.clf()
+        # plot_world = mlab.points3d(world[:, 0], world[:, 1], world[:, 2],
+        #                            scale_factor=100, color=(0, 0, 1), opacity=0.5, resolution=128)
+        matching_points = cloud[list(matching.values()), :]
+
+        plot_scanner = mlab.points3d(matching_points[:, 0], matching_points[:, 1], matching_points[:, 2],
+                                     scale_factor=100, color=(0, 1, 0),
+                                     opacity=0.5, resolution=128)
+        plot_scanner = mlab.points3d(cloud[:, 0], cloud[:, 1], cloud[:, 2],
+                                     scale_factor=100, color=(0, 0, 1),
+                                     opacity=0.5, resolution=128)
+        mlab.show(stop=True)
         non_matching = set(range(cloud.shape[0])).difference(matching.values())
         world = np.concatenate([world, cloud[list(non_matching), :]], axis=0)
     return world, np.asarray(scanner_positions)
@@ -118,6 +126,9 @@ def part_one():
     print(world.shape)
     diff_map = np.sum(get_diff_matrix(scanner_positions, scanner_positions), axis=1)
     print(np.max(diff_map))
+    # plot_world = mlab.points3d(world[:,0], world[:, 1], world[:, 2],
+    #                            scale_factor=100, color=(0, 0, 1), opacity=0.5, resolution=128)
+    mlab.show()
 
 
 if __name__ == '__main__':
